@@ -1,32 +1,113 @@
+
 .banner{
   width: 100%;
   height:100vh; 
   text-align: center;
   overflow: hidden;
-  position: relative;
+  position: relative ;
+  bottom: 50%;
+  background: linear-gradient(135deg, #f0f0f0, #d9d9d9);
 }
 .banner .slider{
   width: 200px;
   height: 250px;
   position: absolute;
-  top: 10%;
+  top: 50%;
   left: calc(50% - 100px);
   transform-style: preserve-3d;
   transform: perspective(1000px);
+  animation: autoRun 20s linear infinite;
 
 }
+@keyframes autoRun{
+  from{
+    transform: perspective(1000px)rotateY(0deg);
+  }to{
+    transform: perspective(1000px) rotateY(360deg);
+  }
+}
+
+
+
 .banner .slider .item{
- 
- 
-  position: absolute;
-  inset: 0 0 0 0;
-  transform:
-  rotate(calc(var(--position)-1)*(360/var(--quantity)*1deg)) 
-  translateZ(550px);
+    position: absolute;
+    inset: 0 0 0 0;
+    transform: 
+        rotateY(calc( (var(--position) - 1) * (360 / var(--quantity)) * 1deg))
+        translateZ(550px);
+    border: 4px solid #000;
+    border-radius: 15px;
+    
 }
 .banner .slider .item img{
   width: 100%;
   height: 100%;
   object-fit: cover;
   border-radius: 10px;
+  z-index: 2;
 }
+.banner .content{
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: min(1400px, 100vw);
+    height: max-content;
+    padding-bottom: 100px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+}
+  .header h1{
+  font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+  font-size: 300px;
+  line-height: 1px;
+  color: #25283b;
+  position: relative;
+  z-index: 1;
+  top: 10%;
+  align-items: center;
+}
+.banner .content h1 ::after{
+  position: absolute;
+  text-align: right;
+  content: attr(data-content);
+}
+.spin{
+  display :inline-block;
+  animation: spin 0.5s linear 1s ;
+  position: relative;
+  
+  position: relative;
+  transition: left 1s ease;
+}
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+.word:hover .a{
+  left: 190px; 
+  transition: left 2s ease;
+  
+}
+.word:hover .b{
+  left: -190px;
+  transition: left 2s ease;
+}
+
+.header{
+  gap: 40%;
+}
+
+
+
+
+
+
+
+
