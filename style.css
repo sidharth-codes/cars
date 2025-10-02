@@ -1,107 +1,164 @@
-
-.banner{
-  width: 100%;
-  height:100vh; 
-  text-align: center;
-  overflow: hidden;
-  position: relative ;
-  bottom: 50%;
-  background: linear-gradient(135deg, #f0f0f0, #d9d9d9);
-}
-.banner .slider{
-  width: 200px;
-  height: 250px;
-  position: absolute;
-  top: 50%;
-  left: calc(50% - 100px);
-  transform-style: preserve-3d;
-  transform: perspective(1000px);
-  animation: autoRun 20s linear infinite;
-
-}
-@keyframes autoRun{
-  from{
-    transform: perspective(1000px)rotateY(0deg);
-  }to{
-    transform: perspective(1000px) rotateY(360deg);
-  }
+/* 1. Global Setup & Variables */
+:root {
+    --bg-dark-1: #121212;
+    --bg-dark-2: #1c1c1e;
+    --bg-dark-3: #2a2a2e;
+    --text-color: #f0f0f0;
+    --primary-accent: #ffffff;
+    --shadow-color: rgba(0, 0, 0, 0.6);
+    --item-width: 250px;
+    --item-height: 350px;
+    --carousel-rotation: 0deg; /* Controlled by JS */
 }
 
-
-
-.banner .slider .item{
-    position: absolute;
-    inset: 0 0 0 0;
-    transform: 
-        rotateY(calc( (var(--position) - 1) * (360 / var(--quantity)) * 1deg))
-        translateZ(550px);
-    border: 4px solid #000;
-    border-radius: 15px;
-    
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
 }
-.banner .slider .item img{
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  border-radius: 10px;
-  z-index: 2;
+
+body {
+    font-family: 'Roboto', sans-serif;
+    color: var(--text-color);
+    /* Animated Gradient Background */
+    background: linear-gradient(135deg, var(--bg-dark-1), var(--bg-dark-2), var(--bg-dark-3));
+    background-size: 400% 400%;
+    animation: gradientAnimation 15s ease infinite;
+    display: grid;
+    grid-template-rows: auto 1fr;
+    min-height: 100vh;
+    overflow: hidden;
 }
-.banner .content{
-    position: absolute;
-    bottom: 0;
-    left: 50%;
-    transform: translateX(-50%);
-    width: min(1400px, 100vw);
-    height: max-content;
-    padding-bottom: 100px;
+
+@keyframes gradientAnimation {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+/* 2. Header & Typography */
+.header {
+    text-align: center;
+    padding: 3rem 1rem;
+    z-index: 10;
+}
+
+.header h1 {
+    font-family: 'Montserrat', sans-serif;
+    font-size: clamp(3rem, 15vw, 12rem);
+    line-height: 1;
+    color: var(--primary-accent);
+    font-weight: 700;
+    letter-spacing: -0.05em;
+    cursor: pointer;
+    transition: letter-spacing 0.5s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+.header h1:hover {
+    letter-spacing: 0.05em;
+}
+
+.spin {
+    display: inline-block;
+    position: relative;
+    transition: transform 0.5s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+.header h1:hover .a {
+    transform: translateY(-15%) rotate(-8deg);
+}
+
+.header h1:hover .b {
+    transform: translateY(15%) rotate(8deg);
+}
+
+/* 3. Carousel Styling */
+.banner {
+    width: 100%;
+    position: relative;
     display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
+    justify-content: center;
     align-items: center;
-}
-  .header h1{
-  font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
-  font-size: 300px;
-  line-height: 1px;
-  color: #25283b;
-  position: relative;
-  z-index: 1;
-  top: 10%;
-  align-items: center;
-}
-.banner .content h1 ::after{
-  position: absolute;
-  text-align: right;
-  content: attr(data-content);
-}
-.spin{
-  display :inline-block;
-  animation: spin 0.5s linear 1s ;
-  position: relative;
-  
-  position: relative;
-  transition: left 1s ease;
-}
-@keyframes spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
-}
-.word:hover .a{
-  left: 190px; 
-  transition: left 2s ease;
-  
-}
-.word:hover .b{
-  left: -190px;
-  transition: left 2s ease;
+    perspective: 2000px;
 }
 
-.header{
-  gap: 40%;
+.slider {
+    width: var(--item-width);
+    height: var(--item-height);
+    position: absolute;
+    transform-style: preserve-3d;
+    animation: autoRun 30s linear infinite;
+    transition: transform 0.5s cubic-bezier(0.76, 0, 0.24, 1);
+    transform: rotateY(var(--carousel-rotation));
+}
+
+.slider.paused,
+.slider:hover {
+    animation-play-state: paused;
+}
+
+@keyframes autoRun {
+    from { transform: rotateY(0deg); }
+    to { transform: rotateY(360deg); }
+}
+
+.slider .item {
+    position: absolute;
+    inset: 0;
+    transform: 
+        rotateY(calc((var(--position) - 1) * (360 / var(--quantity)) * 1deg))
+        translateZ(480px);
+    
+    box-shadow: 0 10px 30px var(--shadow-color);
+    border-radius: 1rem;
+    overflow: hidden;
+    transition: transform 0.4s ease, box-shadow 0.4s ease;
+    will-change: transform; /* Performance hint */
+}
+
+.slider .item:hover {
+    transform: 
+        rotateY(calc((var(--position) - 1) * (360 / var(--quantity)) * 1deg))
+        translateZ(480px)
+        scale(1.08);
+    box-shadow: 0 20px 45px var(--shadow-color);
+}
+
+.slider .item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: filter 0.4s ease;
+}
+
+/* 4. Item Content Overlay */
+.item .content {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to top, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0) 100%);
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    opacity: 0;
+    transition: opacity 0.4s ease;
+    color: #fff;
+}
+
+.item:hover .content {
+    opacity: 1;
+}
+
+.item .content h2 {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 1.25rem;
+    margin-bottom: 0.5rem;
+}
+
+.item .content p {
+    font-size: 0.85rem;
+    line-height: 1.4;
+    font-weight: 300;
 }
 
 
