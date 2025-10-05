@@ -6,8 +6,8 @@
     --text-color: #f0f0f0;
     --primary-accent: #ffffff;
     --shadow-color: rgba(0, 0, 0, 0.6);
-    --item-width: 250px;
-    --item-height: 350px;
+    --item-width: 400px; /* Wider for a rectangle shape */
+    --item-height: 250px; /* Shorter for a rectangle shape */
     --carousel-rotation: 0deg; /* Controlled by JS */
 }
 
@@ -79,7 +79,7 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    perspective: 2000px;
+    perspective: 2500px; /* Increased perspective for more depth */
 }
 
 .slider {
@@ -107,9 +107,11 @@ body {
     inset: 0;
     transform: 
         rotateY(calc((var(--position) - 1) * (360 / var(--quantity)) * 1deg))
-        translateZ(480px);
+        translateZ(600px) /* Increased for more spacing */
+        translateX(20px)  /* Adds horizontal gap between items */
+        rotateX(-10deg); /* Tilts the items for a better 3D look */
     
-    box-shadow: 0 10px 30px var(--shadow-color);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.4), 0 15px 35px rgba(0,0,0,0.5); /* Enhanced shadow */
     border-radius: 1rem;
     overflow: hidden;
     transition: transform 0.4s ease, box-shadow 0.4s ease;
@@ -119,9 +121,11 @@ body {
 .slider .item:hover {
     transform: 
         rotateY(calc((var(--position) - 1) * (360 / var(--quantity)) * 1deg))
-        translateZ(480px)
+        translateZ(600px)
+        translateX(20px)
+        rotateX(-10deg)
         scale(1.08);
-    box-shadow: 0 20px 45px var(--shadow-color);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.5), 0 20px 50px rgba(0,0,0,0.6); /* Deeper shadow on hover */
 }
 
 .slider .item img {
@@ -160,11 +164,15 @@ body {
     line-height: 1.4;
     font-weight: 300;
 }
-
-
-
-
-
-
-
-
+.about {
+  font-family: 'Courier New', Courier, monospace;
+  
+  text-align: center;
+  
+  
+  
+  color: var(--text-color);
+  margin-top: 80px;
+  margin-left: 80px;
+  margin-right: 80px;
+}
